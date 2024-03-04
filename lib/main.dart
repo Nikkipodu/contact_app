@@ -19,6 +19,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        initialRoute : '/home', 
+        routes :{
+            '/home' : (context) => Homepage(), 
+        }, 
     title: 'Contacts List',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
