@@ -1,110 +1,108 @@
 import 'package:contact_app/contacts.dart';
 import 'package:flutter/material.dart';
-class HomePage extends StatefulWidget{
-  const HomePage({Key? key}): super(key:key);
-  @override
-  State<HomePage> createState()=> _HomePageState() ;
 
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+  @override
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>{
-  TextEditingController nameController = TextEditingController(); 
-  TextEditingController contactsController= TextEditingController(); 
+class _HomePageState extends State<HomePage> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController contactsController = TextEditingController();
   List<Contacts> contacts = List.empty(growable: true);
 
-  int selectedIndex = -2;
-  
+  int selectedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true, 
-        title: const Text('Your Contacts List'),), 
-      body: const Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          children:[
-             SizedBox(height:12), 
-            TextField(
-              controller: nameController,
-              decoration:  InputDecoration(
-                hintText: 'Name of the person',
-                    border:OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-
-
-              )
-              ),
-            ),
-            SizedBox(height:12),
-            TextField(
-              controller: contactsController,
-              keyboardType: TextInputType.number,
-              maxLength: 10,
-              decoration: InputDecoration(
-                hintText: 'Contact number of the person',
-                    border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-              )
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Your Contacts List'),
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
               children: [
-                ElevatedButton(
-                    onPressed: () {
-                      //
-                      String name = nameController.text.trim();
-                      String contact = contactsController.text.trim();
-                      if (name.isNotEmpty && contact.isNotEmpty) {
-                        setState(() {
-                          nameController.text = '';
-                          contactsController.text = '';
-                          contacts.add(Contacts(name: name, contact: contact));
-                        });
-                      }
-                      //
-                    },
-                    child: Text('Save the contact')),
-                ElevatedButton(
-                    onPressed: () {
-                      //
-                      String name = nameController.text.trim();
-                      String contact = contactsController.text.trim();
-                      if (name.isNotEmpty && contact.isNotEmpty) {
-                        setState(() {
-                          nameController.text = '';
-                          contactsController.text = '';
-                          contacts[selectedIndex].name = name;
-                          contacts[selectedIndex].contact = contact;
-                          selectedIndex = -2;
-                        });
-                      }
-                      //
-                    },
-                    child: Text('Update the contact information')),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                      hintText: 'Name of the person',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      )),
+                ),
+                const SizedBox(height: 12),
+                TextField(
+                  controller: contactsController,
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
+                  decoration: const InputDecoration(
+                      hintText: 'Contact number of the person',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      )),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          //
+                          String name = nameController.text.trim();
+                          String contact = contactsController.text.trim();
+                          if (name.isNotEmpty && contact.isNotEmpty) {
+                            setState(() {
+                              nameController.text = '';
+                              contactsController.text = '';
+                              contacts
+                                  .add(Contacts(name: name, contact: contact));
+                            });
+                          }
+                          //
+                        },
+                        child: const Text('Save the contact')),
+                    ElevatedButton(
+                        onPressed: () {
+                          //
+                          String name = nameController.text.trim();
+                          String contact = contactsController.text.trim();
+                          if (name.isNotEmpty && contact.isNotEmpty) {
+                            setState(() {
+                              nameController.text = '';
+                              contactsController.text = '';
+                              contacts[selectedIndex].name = name;
+                              contacts[selectedIndex].contact = contact;
+                              selectedIndex = -1;
+                            });
+                          }
+                          //
+                        },
+                        child: const Text('Update the contact information')),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                contacts.isEmpty
+                    ? const Text(
+                        'No Contact saved yet.',
+                        style: TextStyle(fontSize: 22),
+                      )
+                    : Expanded(
+                        child: ListView.builder(
+                        itemCount: contacts.length,
+                        itemBuilder: (context, index) => getRow(index),
+                      )),
               ],
-            ),
-             SizedBox(height: 10),
-            contacts.isEmpty
-                ?  Text(
-              'No Contact saved yet.',
-              style: TextStyle(fontSize: 22),
-            )
-                : Expanded(
-              child:  ListView.builder(
-                itemCount: contacts.length,itemBuilder:(context, index) => getRow(index) ,
-        )
-       )];
-  },
-
+            )));
+  }
 
   Widget getRow(int index) {
     return Card(
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor:
-          index % 2 == 0 ? Colors.blueAccent : Colors.black26,
+          backgroundColor: index % 2 == 0 ? Colors.blueAccent : Colors.black26,
           foregroundColor: Colors.white,
           child: Text(
             contacts[index].name[0],
