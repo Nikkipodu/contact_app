@@ -12,12 +12,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Contacts List',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomePage(),
+        initialRoute : '/home', 
+        routes :{
+            '/home' : (context) => Homepage(), 
+        }, 
+    title: 'Contacts List',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+    primarySwatch: Colors.blue,
+    ),
+    home: const HomePage(),
     );
   }
 }
